@@ -38,7 +38,7 @@ module Tamashii
           @stream.hijack_rack_socket
 
           callback = @env['async.callback']
-          callback.call([101, {}, @stream]) if callback
+          callback&.call([101, {}, @stream])
 
           @driver.start
         end

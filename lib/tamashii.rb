@@ -1,5 +1,8 @@
-require "tamashii/version"
+# frozen_string_literal: true
 
+require 'tamashii/version'
+require 'tamashii/server'
+
+# :nodoc:
 module Tamashii
-  # Your code goes here...
 end

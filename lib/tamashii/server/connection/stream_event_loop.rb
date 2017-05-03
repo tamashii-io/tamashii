@@ -38,7 +38,7 @@ module Tamashii
         def writes_pending(io)
           @todo << lambda do
             monitor = @streams[io]
-            monitor.interesets = :rw if monitor
+            monitor&.interesets = :rw
           end
           wakeup
         end

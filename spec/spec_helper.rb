@@ -1,6 +1,12 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 require 'simplecov'
-SimpleCov.start
+
+SimpleCov.start do
+  add_group 'Server', 'lib/tamashii/server'
+  add_group 'Client', 'lib/tamashii/client'
+end
 
 require 'tamashii'
 
