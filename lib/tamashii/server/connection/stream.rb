@@ -35,14 +35,22 @@ module Tamashii
         def write(data)
           return @stream_send.call(data) if @stream_send
 
-          write_safe(data) if @write_lock.try_lock
+          return write_safe(data) if @write_lock.try_lock
+          write_buffer(data)
           data.bytesize
         rescue EOFError, Errno::ECONNRESET
           @socket.client_gone
         end
 
         def flush_write_buffer
-          # TODO: Implement this method likes ActionCable
+          @write_lock.synchronize do
+            loop do
+              return true if @write_buffer.empty? && @write_head.nil?
+              @write_head = @write_buffer.pop if @write_head.nil?
+
+              return unless process_flush
+            end
+          end
         end
 
         def receive(data)
@@ -82,6 +90,19 @@ module Tamashii
         def write_head(head)
           @write_head = head
           @event_loop.writes_pending @rack_hijack_io
+        end
+
+        def process_flush
+          written = @rack_hijack_io.write_nonblock(@write_head, exception: false)
+          case written
+          when :wait_writable then return false
+          when @write_head.bytesize
+            @write_head = nil
+            return true
+          else
+            @write_head = @write_head.byteslice(written, @write_head.bytesize)
+            return false
+          end
         end
 
         def clean_rack_hijack

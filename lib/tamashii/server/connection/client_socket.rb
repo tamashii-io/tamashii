@@ -57,7 +57,7 @@ module Tamashii
         def transmit(message)
           case message
           when Numeric then @driver.text(message.to_s)
-          when String then @sriver.text(message)
+          when String then @driver.text(message)
           else
             @driver.binary(message)
           end
@@ -99,7 +99,6 @@ module Tamashii
 
         def receive_message(data)
           # TODO: Process Data
-          puts "RECEIVE DATA: #{data}"
         end
 
         def emit_error(message)
