@@ -4,9 +4,11 @@ module Tamashii
   module Server
     # :nodoc:
     class Rack
-      def initialize(event_loop)
+      def initialize(server, event_loop)
+        @server = server
         @event_loop = event_loop
-        Server.subscribe
+
+        @server.pubsub.subscribe
       end
 
       def call(env)
@@ -17,7 +19,7 @@ module Tamashii
       private
 
       def start_websocket(env)
-        Connection::ClientSocket.new(env, @event_loop).rack_response
+        Connection::ClientSocket.new(@server, env, @event_loop).rack_response
       end
 
       def start_http(_)

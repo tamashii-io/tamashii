@@ -23,7 +23,8 @@ module Tamashii
         attr_reader :env, :url
 
         # TODO: Support define protocols
-        def initialize(env, event_loop)
+        def initialize(server, env, event_loop)
+          @server = server
           @env = env
           @event_loop = event_loop
 
@@ -98,7 +99,7 @@ module Tamashii
         end
 
         def receive_message(data)
-          Server.broadcast(data)
+          @server.pubsub.broadcast(data)
         end
 
         def emit_error(message)

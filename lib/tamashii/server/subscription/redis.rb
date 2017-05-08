@@ -5,6 +5,10 @@ module Tamashii
     module Subscription
       # :nodoc:
       class Redis
+        def initialize(server)
+          @server = server
+        end
+
         def broadcast(payload)
           broadcast_conn.publish('_tamashii_internal', pack(payload))
         end
@@ -43,7 +47,7 @@ module Tamashii
 
         def broadcast_conn
           # TODO: Add config to support set server
-          @conn || Server::LOCK.synchronize do
+          @conn || @server.mutex.synchronize do
             @conn ||= ::Redis.new
           end
         end
