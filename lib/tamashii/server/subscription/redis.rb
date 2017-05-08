@@ -5,12 +5,12 @@ module Tamashii
     module Subscription
       # :nodoc:
       class Redis
-        def initialize
-          ensure_listener_running
-        end
-
         def broadcast(payload)
           broadcast_conn.publish('_tamashii_internal', payload)
+        end
+
+        def subscribe
+          ensure_listener_running
         end
 
         def shutdown

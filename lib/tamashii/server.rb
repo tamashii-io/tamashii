@@ -42,6 +42,10 @@ module Tamashii
         pubsub.broadcast(payload)
       end
 
+      def subscribe
+        pubsub.subscribe
+      end
+
       private
 
       def pubsub

@@ -4,6 +4,10 @@ module Tamashii
   module Server
     # :nodoc:
     class Rack
+      def initialize
+        Server.subscribe
+      end
+
       def call(env)
         return start_websocket(env) if ::WebSocket::Driver.websocket?(env)
         start_http(env)
