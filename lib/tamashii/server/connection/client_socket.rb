@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+#
 module Tamashii
   module Server
     module Connection
@@ -94,11 +94,13 @@ module Tamashii
         end
 
         def open
+          Server::Client.register(self)
           # TODO: Call open event
         end
 
         def receive_message(data)
           # TODO: Process Data
+          Server.broadcast(data)
         end
 
         def emit_error(message)
@@ -107,6 +109,7 @@ module Tamashii
 
         def begin_close(_reason, _code)
           # TODO: Logging close
+          Client.unregister(self)
           finialize_close
         end
 

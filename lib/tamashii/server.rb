@@ -5,13 +5,17 @@ require 'websocket/driver'
 require 'rack'
 require 'nio'
 require 'thread'
+require 'redis'
 
 require 'tamashii/server/rack'
 require 'tamashii/server/response'
+require 'tamashii/server/client'
 
 require 'tamashii/server/connection/client_socket'
 require 'tamashii/server/connection/stream_event_loop'
 require 'tamashii/server/connection/stream'
+
+require 'tamashii/server/subscription/redis'
 
 module Tamashii
   # :nodoc:
@@ -32,6 +36,18 @@ module Tamashii
 
       def call!(env)
         instance.call(env)
+      end
+
+      def broadcast(payload)
+        pubsub.broadcast(payload)
+      end
+
+      private
+
+      def pubsub
+        @pubsub || LOCK.synchronize do
+          @pubsub ||= Subscription::Redis.new
+        end
       end
     end
   end
