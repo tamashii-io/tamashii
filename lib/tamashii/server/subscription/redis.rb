@@ -6,7 +6,7 @@ module Tamashii
       # :nodoc:
       class Redis
         def broadcast(payload)
-          broadcast_conn.publish('_tamashii_internal', payload)
+          broadcast_conn.publish('_tamashii_internal', pack(payload))
         end
 
         def subscribe
@@ -19,6 +19,24 @@ module Tamashii
 
         def prepare
           ensure_listener_running
+        end
+
+        def pack(data)
+          case data
+          when Numeric then "N:#{data.to_s}"
+          when String then "S:#{data}"
+          else
+            "B:#{data.pack('C*')}"
+          end
+        end
+
+        def unpack(data)
+          case data[0..1]
+          when 'N:' then data[2..-1].to_i
+          when 'S:' then data[2..-1]
+          else
+            data[2..-1].unpack('C*')
+          end
         end
 
         protected
@@ -44,7 +62,7 @@ module Tamashii
         end
 
         def process_message(message)
-          Client.clients.each { |client| client.transmit(message) }
+          Client.clients.each { |client| client.transmit(unpack(message)) }
         end
 
         def ensure_listener_running
