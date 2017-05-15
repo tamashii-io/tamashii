@@ -10,6 +10,7 @@ module Tamashii
         end
 
         def broadcast(payload)
+          Server.logger.info("Broadcasting: #{payload}")
           broadcast_conn.publish('_tamashii_internal', pack(payload))
         end
 
@@ -27,7 +28,7 @@ module Tamashii
 
         def pack(data)
           case data
-          when Numeric then "N:#{data.to_s}"
+          when Numeric then "N:#{data}"
           when String then "S:#{data}"
           else
             "B:#{data.pack('C*')}"
@@ -57,6 +58,7 @@ module Tamashii
         end
 
         def listen
+          Server.logger.info('Starting subscribe redis #_tamashii_internal channel')
           subscription_conn.without_reconnect do
             # TODO: Add config to support set namespace
             subscription_conn.subscribe('_tamashii_internal') do |on|

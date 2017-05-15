@@ -21,12 +21,15 @@ module Tamashii
         end
 
         attr_reader :env, :url
+        attr_accessor :id
 
         # TODO: Support define protocols
         def initialize(server, env, event_loop)
           @server = server
           @env = env
           @event_loop = event_loop
+
+          @id ||= env['REMOTE_ADDR']
 
           @url = ClientSocket.determine_url(@env)
           @driver = setup_driver
@@ -46,6 +49,7 @@ module Tamashii
 
         def rack_response
           start_driver
+          Server.logger.info("Accept new websocket connection from #{env['REMOTE_ADDR']}")
           Server::Response.new(message: 'WebSocket Connected')
         end
 
@@ -56,6 +60,7 @@ module Tamashii
         end
 
         def transmit(message)
+          Server.logger.debug("Send to #{id} with data #{message}")
           case message
           when Numeric then @driver.text(message.to_s)
           when String then @driver.text(message)
@@ -88,7 +93,7 @@ module Tamashii
 
           driver.on(:open) { |_| open }
           driver.on(:message) { |e| receive_message(e.data) }
-          driver.on(:close) { |e| being_close(e.reason, e.code) }
+          driver.on(:close) { |e| begin_close(e.reason, e.code) }
           driver.on(:error) { |e| emit_error(e.message) }
 
           driver
@@ -103,11 +108,11 @@ module Tamashii
         end
 
         def emit_error(message)
-          # TODO: Logging error
+          Server.logger.error("Client #{id} has some error: #{message}")
         end
 
         def begin_close(_reason, _code)
-          # TODO: Logging close
+          Server.logger.info("Close connection to #{id}")
           Client.unregister(self)
           finialize_close
         end
