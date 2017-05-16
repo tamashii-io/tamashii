@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Tamashii::Server do
+RSpec.describe Tamashii::Server::Base do
   let :env do
     {
       'REQUEST_METHOD'             => 'GET',
@@ -16,10 +16,14 @@ RSpec.describe Tamashii::Server do
 
   let(:client) { double(Tamashii::Server::Connection::ClientSocket) }
   let(:event_loop) { double(Tamashii::Server::Connection::StreamEventLoop) }
+  let(:pubsub) { double(Tamashii::Server::Subscription::Redis) }
 
   before do
     # Prevent start thread
     allow(Tamashii::Server::Connection::StreamEventLoop).to receive(:new).and_return(event_loop)
+    allow(Tamashii::Server::Subscription::Redis).to receive(:new).and_return(pubsub)
+
+    allow(pubsub).to receive(:subscribe)
   end
 
   it 'starts http request' do
@@ -31,17 +35,9 @@ RSpec.describe Tamashii::Server do
   it 'starts websocket request' do
     request = Rack::MockRequest.env_for('/', env)
     expect(Tamashii::Server::Connection::ClientSocket)
-      .to receive(:new).with(request, event_loop).and_return(client)
+      .to receive(:new).with(subject, request, event_loop).and_return(client)
     expect(client).to receive(:rack_response)
 
     subject.call(request)
-  end
-
-  it 'only create one instance' do
-    request = Rack::MockRequest.env_for('/')
-    described_class.call(request)
-    instance = described_class.instance
-    described_class.call(request)
-    expect(described_class.instance).to eq(instance)
   end
 end

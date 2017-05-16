@@ -4,5 +4,5 @@ require 'tamashii/version'
 
 # :nodoc:
 module Tamashii
-  autoload :Server, 'server'
+  autoload :Server, 'tamashii/server'
 end

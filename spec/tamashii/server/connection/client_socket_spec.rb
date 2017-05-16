@@ -40,20 +40,26 @@ RSpec.describe Tamashii::Server::Connection::ClientSocket do
       'HTTP_ORIGIN'                => 'http://www.example.com',
       'HTTP_SEC_WEBSOCKET_KEY'     => key,
       'HTTP_SEC_WEBSOCKET_VERSION' => '13',
+      'REMOTE_ADDR'                => '127.0.0.1',
       'rack.hijack'                => proc {},
       'rack.hijack_io'             => tcp_socket
     }
   end
 
   let(:request) { Rack::MockRequest.env_for('/', env) }
+  let(:server) { double(Tamashii::Server::Base) }
   let(:tcp_socket) { double(TCPSocket) }
   let(:event_loop) { double(Tamashii::Server::Connection::StreamEventLoop) }
   let(:key) { '2vBVWg4Qyk3ZoM/5d3QD9Q==' }
 
-  subject { Tamashii::Server::Connection::ClientSocket.new(env, event_loop) }
+  subject { Tamashii::Server::Connection::ClientSocket.new(server, env, event_loop) }
 
   before do
     allow(event_loop).to receive(:attach)
     allow(tcp_socket).to receive(:write_nonblock) { |message| @bytes = message.bytes.to_a }
+  end
+
+  describe '#rack_response' do
+    it { expect(subject.rack_response).to be_instance_of(Tamashii::Server::Response) }
   end
 end
