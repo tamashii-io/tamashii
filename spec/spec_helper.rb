@@ -5,6 +5,7 @@ require 'simplecov'
 
 SimpleCov.start do
   add_filter '/spec/'
+  add_filter '/vendor/'
 
   add_group 'Server', 'lib/tamashii/server'
   add_group 'Client', 'lib/tamashii/client'
