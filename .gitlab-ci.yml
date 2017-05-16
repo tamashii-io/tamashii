@@ -21,6 +21,7 @@ rspec:
   stage: test
   script:
     - bundle exec rspec -p
+    - bundle exec codeclimate-test-reporter
 
 rubocop:
   stage: test
