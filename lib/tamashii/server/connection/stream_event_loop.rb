@@ -27,7 +27,7 @@ module Tamashii
         end
 
         def detach(io, _)
-          @streams << lambda do
+          @todo << lambda do
             @nio.deregister io
             @streams.delete io
             io.close
