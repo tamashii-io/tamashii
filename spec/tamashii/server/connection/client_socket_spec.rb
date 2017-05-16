@@ -56,7 +56,10 @@ RSpec.describe Tamashii::Server::Connection::ClientSocket do
 
   before do
     allow(event_loop).to receive(:attach)
-    allow(tcp_socket).to receive(:write_nonblock) { |message| @bytes = message.bytes.to_a }
+    allow(tcp_socket).to receive(:write_nonblock) do |message|
+      @bytes = message.bytes.to_a
+      @bytes.size
+    end
   end
 
   describe '#rack_response' do

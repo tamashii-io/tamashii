@@ -60,6 +60,7 @@ module Tamashii
         end
 
         def transmit(message)
+          p message
           Server.logger.debug("Send to #{id} with data #{message}")
           case message
           when Numeric then @driver.text(message.to_s)
