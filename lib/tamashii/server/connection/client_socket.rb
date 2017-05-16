@@ -20,6 +20,11 @@ module Tamashii
           false
         end
 
+        CONNECTING = 0
+        OPEN       = 1
+        CLOSING    = 2
+        CLOSED     = 3
+
         attr_reader :env, :url
         attr_accessor :id
 
@@ -30,6 +35,7 @@ module Tamashii
           @event_loop = event_loop
 
           @id ||= env['REMOTE_ADDR']
+          @state = CONNECTING
 
           @url = ClientSocket.determine_url(@env)
           @driver = setup_driver
@@ -60,7 +66,6 @@ module Tamashii
         end
 
         def transmit(message)
-          p message
           Server.logger.debug("Send to #{id} with data #{message}")
           case message
           when Numeric then @driver.text(message.to_s)
@@ -101,25 +106,34 @@ module Tamashii
         end
 
         def open
+          return unless @state == CONNECTING
+          @state = OPEN
           Server::Client.register(self)
         end
 
         def receive_message(data)
+          return unless @state == OPEN
           @server.pubsub.broadcast(data)
         end
 
         def emit_error(message)
+          return if @state >= CLOSING
           Server.logger.error("Client #{id} has some error: #{message}")
         end
 
         def begin_close(_reason, _code)
+          return if @state == CLOSED
+          @state = CLOSING
+
           Server.logger.info("Close connection to #{id}")
           Client.unregister(self)
           finialize_close
         end
 
         def finialize_close
-          # TODO: Processing close
+          return if @state == CLOSED
+          @state = CLOSED
+
           @stream.close
         end
       end
