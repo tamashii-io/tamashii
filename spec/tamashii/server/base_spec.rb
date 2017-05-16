@@ -10,7 +10,7 @@ RSpec.describe Tamashii::Server::Base do
       'HTTP_UPGRADE'               => 'websocket',
       'HTTP_ORIGIN'                => 'http://www.example.com',
       'HTTP_SEC_WEBSOCKET_KEY'     => 'JFBCWHksyIpXV+6Wlq/9pw==',
-      'HTTP_SEC_WEBSOCKET_VERSION' => '13',
+      'HTTP_SEC_WEBSOCKET_VERSION' => '13'
     }
   end
 
