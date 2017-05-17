@@ -19,7 +19,7 @@ module Tamashii
       private
 
       def start_websocket(env)
-        Connection::ClientSocket.new(@server, env, @event_loop).rack_response
+        Server.config.socket_class.new(@server, env, @event_loop).rack_response
       end
 
       def start_http(_)

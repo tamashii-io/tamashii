@@ -17,7 +17,7 @@ module Tamashii
 
       def pubsub
         @pubsub || mutex.synchronize do
-          @pubsub ||= Subscription::Redis.new(self)
+          @pubsub ||= Server.config.pubsub_class.new(self)
         end
       end
 
