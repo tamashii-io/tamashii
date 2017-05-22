@@ -8,7 +8,7 @@ module Tamashii
     class Config
       include Tamashii::Configurable
 
-      register :socket_class, Connection::ClientSocket
+      register :connection_class, Connection::Base
       register :pubsub_class, Subscription::Redis
     end
   end

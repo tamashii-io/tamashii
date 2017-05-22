@@ -4,6 +4,7 @@ module Tamashii
   module Server
     # :nodoc:
     module Connection
+      autoload :Base,            'tamashii/server/connection/base'
       autoload :ClientSocket,    'tamashii/server/connection/client_socket'
       autoload :StreamEventLoop, 'tamashii/server/connection/stream_event_loop'
       autoload :Stream,          'tamashii/server/connection/stream'

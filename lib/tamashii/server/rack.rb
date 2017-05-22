@@ -19,7 +19,8 @@ module Tamashii
       private
 
       def start_websocket(env)
-        Server.config.socket_class.new(@server, env, @event_loop).rack_response
+        conn = Server.config.connection_class.new(@server, env, @event_loop)
+        conn.init
       end
 
       def start_http(_)

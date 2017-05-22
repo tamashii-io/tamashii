@@ -29,8 +29,9 @@ module Tamashii
         attr_accessor :id
 
         # TODO: Support define protocols
-        def initialize(server, env, event_loop)
+        def initialize(server, conn, env, event_loop)
           @server = server
+          @conn = conn
           @env = env
           @event_loop = event_loop
 
@@ -108,24 +109,28 @@ module Tamashii
         def open
           return unless @state == CONNECTING
           @state = OPEN
-          Server::Client.register(self)
+          @conn.on_open
+          Client.register(self)
         end
 
         def receive_message(data)
           return unless @state == OPEN
-          @server.pubsub.broadcast(data)
+          @conn.on_message(data)
         end
 
         def emit_error(message)
           return if @state >= CLOSING
           Server.logger.error("Client #{id} has some error: #{message}")
+          @conn.on_error(message)
         end
 
         def begin_close(_reason, _code)
+          # TODO: Define reason and code
           return if @state == CLOSED
           @state = CLOSING
 
           Server.logger.info("Close connection to #{id}")
+          @conn.on_close
           Client.unregister(self)
           finialize_close
         end
