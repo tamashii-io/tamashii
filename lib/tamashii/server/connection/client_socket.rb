@@ -4,6 +4,7 @@ module Tamashii
   module Server
     module Connection
       # :nodoc:
+      # rubocop:disable Metrics/ClassLength
       class ClientSocket
         def self.determine_url(env)
           scheme = secure_request?(env) ? 'wss:' : 'ws:'

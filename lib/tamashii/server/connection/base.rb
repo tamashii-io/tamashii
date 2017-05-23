@@ -18,18 +18,15 @@ module Tamashii
           @socket.rack_response
         end
 
-        def on_open
-        end
+        def on_open; end
 
         def on_message(data)
           @server.pubsub.broadcast(data)
         end
 
-        def on_error
-        end
+        def on_error; end
 
-        def on_close
-        end
+        def on_close; end
       end
     end
   end
