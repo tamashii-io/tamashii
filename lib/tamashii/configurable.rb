@@ -32,14 +32,14 @@ module Tamashii
       @configs[key.to_sym] = value
     end
 
-    def respond_to_missing?(name)
+    def respond_to_missing?(name, _all = false)
       self.class.exist?(name)
     end
 
     def method_missing(name, *args, &block)
       return super unless self.class.exist?(name)
-      return config(name.to_sym) unless name.to_s.end_with?('=')
-      config(name.to_s[0..-2].to_sym, args.first, &block)
+      return config(name.to_sym, nil, &block) unless name.to_s.end_with?('=')
+      config(name.to_s[0..-2].to_sym, args.first)
     end
   end
 end
