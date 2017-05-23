@@ -34,9 +34,9 @@ RSpec.describe Tamashii::Server::Base do
 
   it 'starts websocket request' do
     request = Rack::MockRequest.env_for('/', env)
-    expect(Tamashii::Server::Connection::ClientSocket)
+    expect(Tamashii::Server::Connection::Base)
       .to receive(:new).with(subject, request, event_loop).and_return(client)
-    expect(client).to receive(:rack_response)
+    expect(client).to receive(:init)
 
     subject.call(request)
   end
