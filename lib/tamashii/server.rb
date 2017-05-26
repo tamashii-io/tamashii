@@ -29,7 +29,7 @@ module Tamashii
 
     def self.logger
       # TODO: Add config to set logger path
-      @logger ||= ::Logger.new(STDOUT)
+      @logger ||= ::Logger.new(config.log_path)
     end
   end
 end

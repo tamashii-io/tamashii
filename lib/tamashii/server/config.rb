@@ -10,6 +10,7 @@ module Tamashii
 
       register :connection_class, Connection::Base
       register :pubsub_class, Subscription::Redis
+      register :log_path, STDOUT
     end
   end
 end
