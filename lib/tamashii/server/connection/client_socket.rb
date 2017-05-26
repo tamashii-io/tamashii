@@ -77,6 +77,10 @@ module Tamashii
           end
         end
 
+        def ping(data, &block)
+          @driver.ping(data, &block)
+        end
+
         def close
           # TODO: Define close reason / code
           @driver.close('', 1000)

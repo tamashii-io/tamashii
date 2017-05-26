@@ -7,6 +7,7 @@ require 'websocket/driver'
 require 'rack'
 require 'nio'
 require 'thread'
+require 'concurrent'
 require 'redis'
 
 module Tamashii
