@@ -42,6 +42,7 @@ module Tamashii
           @url = ClientSocket.determine_url(@env)
           @driver = setup_driver
 
+          @server.pubsub.subscribe
           @stream = Stream.new(@event_loop, self)
         end
 

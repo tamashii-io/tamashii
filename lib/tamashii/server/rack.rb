@@ -7,8 +7,6 @@ module Tamashii
       def initialize(server, event_loop)
         @server = server
         @event_loop = event_loop
-
-        @server.pubsub.subscribe
       end
 
       def call(env)
