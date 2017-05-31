@@ -51,6 +51,7 @@ RSpec.describe Tamashii::Server::Connection::ClientSocket do
   let(:tcp_socket) { double(TCPSocket) }
   let(:event_loop) { double(Tamashii::Server::Connection::StreamEventLoop) }
   let(:conn) { double(Tamashii::Server::Connection::Base) }
+  let(:pubsub) { double(Tamashii::Server::Subscription::Redis) }
   let(:key) { '2vBVWg4Qyk3ZoM/5d3QD9Q==' }
 
   subject { Tamashii::Server::Connection::ClientSocket.new(server, conn, env, event_loop) }
@@ -58,6 +59,8 @@ RSpec.describe Tamashii::Server::Connection::ClientSocket do
   before do
     allow(conn).to receive(:on_open)
     allow(event_loop).to receive(:attach)
+    allow(server).to receive(:pubsub).and_return(pubsub)
+    allow(pubsub).to receive(:subscribe)
     allow(tcp_socket).to receive(:write_nonblock) do |message|
       @bytes = message.bytes.to_a
       @bytes.size
