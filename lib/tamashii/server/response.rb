@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'tamashii/version'
+
 module Tamashii
   module Server
     # :nodoc:
