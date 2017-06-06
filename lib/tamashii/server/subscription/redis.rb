@@ -68,7 +68,7 @@ module Tamashii
         end
 
         def process_message(message)
-          Client.clients.each { |client| client.transmit(unpack(message)) }
+          Client.clients.dup.each { |client| client.transmit(unpack(message)) }
         end
 
         def ensure_listener_running

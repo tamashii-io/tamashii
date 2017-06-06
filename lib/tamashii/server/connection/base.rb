@@ -24,7 +24,7 @@ module Tamashii
           @server.pubsub.broadcast(data)
         end
 
-        def on_error; end
+        def on_error(message = nil); end
 
         def on_close; end
       end
