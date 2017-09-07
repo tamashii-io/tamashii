@@ -81,14 +81,14 @@ By default Tamashii will broadcast the received message to other clients automat
 
 ### Client
 
-> Not yet supported
+The client is in another repository: [tamashii-client](https://github.com/tamashii-io/tamashii-client)
 
 
 ## Development
 
 To get the source code
 
-    $ git clone git@github.com:5xRuby/tamashii.git
+    $ git clone git@github.com:tamashii-io/tamashii.git
 
 Initialize the development environment
 
