@@ -49,7 +49,7 @@ If you want to start the server with other web server, such as Puma:
 
 #### Connection
 
-In Tamashii, we only need to focus on how to connect with Websocket users to exchange information, on the process of multi-process web server problems have been resolved in Tamashii.
+In Tamashii, we only need to focus on how to connect with WebSocket users to exchange information, on the process of multi-process web server problems have been resolved in Tamashii.
 
 We can create a `Client` object to handle the behavior of each user.
 
@@ -70,9 +70,9 @@ In most cases, we only need to deal with parts of `on_message` , the other event
 
 ```ruby
 class Client
-    def on_message(data)
-        # Processing for the received Data (Binary)
-    end
+  def on_message(data)
+    # Processing for the received Data (Binary)
+  end
 end
 ```
 
@@ -104,7 +104,7 @@ Installation the version of development on localhost
 
 ## Contribution
 
-Please report to us on [Github](https://github.com/tamashii-io/tamashii) if there is any bug or suggested modified.
+Please report to us on [GitHub](https://github.com/tamashii-io/tamashii) if there is any bug or suggested modified.
 
 The project was developed by [5xruby Inc.](https://5xruby.tw/)
 
