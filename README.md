@@ -49,7 +49,7 @@ If you want to start the server with other web server, such as Puma:
 
 #### Connection
 
-In Tamashii, we only need to focus on how to connect with Websocket users to exchange information, on the process of multi-process web server problems have been resolved in Tamashii.
+In Tamashii, we only need to focus on how to connect with WebSocket users to exchange information, on the process of multi-process web server problems have been resolved in Tamashii.
 
 We can create a `Client` object to handle the behavior of each user.
 
