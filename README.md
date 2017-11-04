@@ -70,9 +70,9 @@ In most cases, we only need to deal with parts of `on_message` , the other event
 
 ```ruby
 class Client
-    def on_message(data)
-        # Processing for the received Data (Binary)
-    end
+  def on_message(data)
+    # Processing for the received Data (Binary)
+  end
 end
 ```
 
