@@ -6,9 +6,10 @@ require 'logger/colors'
 require 'websocket/driver'
 require 'rack'
 require 'nio'
-require 'thread'
 require 'concurrent'
 require 'redis'
+
+require 'tamashii/hookable'
 
 module Tamashii
   # :nodoc:
@@ -32,4 +33,8 @@ module Tamashii
       @logger ||= ::Logger.new(config.log_path)
     end
   end
+end
+
+Tamashii::Hook.after(:config) do |config|
+  config.register(:server, Tamashii::Server.config)
 end

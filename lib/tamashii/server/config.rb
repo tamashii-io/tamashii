@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'tamashii/configurable'
+require 'tamashii/config'
 
 module Tamashii
   module Server
@@ -8,9 +8,9 @@ module Tamashii
     class Config
       include Tamashii::Configurable
 
-      register :connection_class, Connection::Base
-      register :pubsub_class, Subscription::Redis
-      register :log_path, STDOUT
+      config :connection_class, default: Connection::Base
+      config :pubsub_class, default: Subscription::Redis
+      config :log_path, default: STDOUT
     end
   end
 end
